@@ -12,7 +12,7 @@ app.use(cors())
 
 require('./routes')(app)
 
-sequelize.sync()
+sequelize.sync() // { force: true } 데이터 베이스 초기화
   .then(function () {
     app.listen(config.port)
     console.log(`Server started on Port ${config.port}`)
