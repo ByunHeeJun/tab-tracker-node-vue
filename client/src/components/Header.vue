@@ -8,12 +8,14 @@
             </span>
         </v-toolbar-title>
 
-        <!-- 보류 -->
-        <!-- <v-toolbar-items>
-            <v-btn flat dark>
-                Browse
+        <v-toolbar-items>
+            <v-btn
+              flat
+              dark
+              @click="navigateTo({name: 'songs'})">
+              Browse
             </v-btn>
-        </v-toolbar-items> -->
+        </v-toolbar-items>
 
         <v-spacer></v-spacer> <!-- v-spacer 밑으로 버튼을 생성하면 맨 오른쪽으로 이동하게된다. -->
         <v-toolbar-items>
@@ -54,9 +56,13 @@ export default {
     navigateTo (route) { // index.js에 있는 경로와 연결됨
       this.$router.push(route)
     },
-    loggout () {
-      this.$store.dispatch('setToken', null)
+    logout () {
+      this.$store.dispatch('setToken', null) // token과 user를 지운다
       this.$store.dispatch('setUser', null)
+      // TODO: redirect to homepage
+      this.$router.push({
+        name: 'root'
+      })
     }
   }
 }
