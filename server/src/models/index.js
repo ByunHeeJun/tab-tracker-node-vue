@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-expressions */
+// 여기를 orcledb로 바꿔야함
 const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
@@ -29,5 +30,6 @@ fs
 
 db.sequelize = sequelize
 db.Sequelize = Sequelize
+// console.log('dbdbdb', db)
 
 module.exports = db

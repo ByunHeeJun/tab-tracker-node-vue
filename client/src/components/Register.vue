@@ -1,7 +1,7 @@
 
 <template>
   <v-layout column>
-    <v-flex xs6 offset-xs>
+    <v-flex xs2 align-self-center>
       <panel title="Register">
           <form
             name="tab-tracker-form"

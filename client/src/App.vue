@@ -40,4 +40,8 @@ export default {
 .v-toolbar__title {
   color:white;
 }
+
+.danger-alert {
+  color: red;
+}
 </style>
