@@ -3,7 +3,7 @@
         <v-toolbar-title class="mr-4">
             <span
             class="home"
-            @click="navigateTo({name: 'root'})">
+            @click="navigateTo({name: 'login'})">
             TabTracker
             </span>
         </v-toolbar-title>
@@ -54,14 +54,14 @@
 export default {
   methods: {
     navigateTo (route) { // index.js에 있는 경로와 연결됨
-      this.$router.push(route)
+      this.$router.push(route) // navigateTo 함수 말고도 :to="{name:'?'}" 형식으로 라우터를 연결해서 보낼 수 있는 방법이 있다. part 6 Search 20분 참조 , params: => params () 로 바뀜
     },
     logout () {
       this.$store.dispatch('setToken', null) // token과 user를 지운다
       this.$store.dispatch('setUser', null)
       // TODO: redirect to homepage
       this.$router.push({
-        name: 'root'
+        name: 'login'
       })
     }
   }

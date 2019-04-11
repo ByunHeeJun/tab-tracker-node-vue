@@ -4,14 +4,35 @@
 /* eslint-disable no-unused-vars */
 // eslint-disable-next-line no-unused-vars
 const { Song } = require('../models')
+const { Op } = require('sequelize') // 이건 몽고 데이터 베이스 함수이기 때문에 oracle에서 찾아봐야된다.
 // 종점을 만드는 곳. //models라는 폴더를 require하기 때문에 /models/index.js에서 connectionPool만든 다음에 여기서 가져다 쓰는 방식으로
 module.exports = {
   async index (req, res) {
     try {
-      // limit : 데이터베이스를 10개로 제한한 것.
-      const songs = await Song.findAll({ // await 안써주면 오류도 안잡히고 찾기 힘들다. 함수에 async가 써져있으면 그 안의 실행부분에 await를 써줄 것.
-        limit: 10 
-      })
+      console.log('Come function out?')
+      let songs = null
+      const search = req.query.search
+      console.log('search', search)
+      if (search) {
+        console.log('Come?')
+        console.log(search)
+        songs = await Song.findAll({
+          where: {
+            [Op.or]: [
+              'title', 'artist', 'genre', 'album'
+            ].map(key => ({
+              [key]: {
+                [Op.like]: `%${search}%`
+              }
+            }))
+          }
+        })
+      } else {
+        // limit : 데이터베이스를 10개로 제한한 것.
+        songs = await Song.findAll({ // await 안써주면 오류도 안잡히고 찾기 힘들다. 함수에 async가 써져있으면 그 안의 실행부분에 await를 써줄 것.
+          limit: 10 
+        })
+      }
       res.send(songs)
     } catch (err) {
       res.status(500).send({

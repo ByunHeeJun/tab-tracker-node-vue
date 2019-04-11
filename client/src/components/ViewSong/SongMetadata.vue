@@ -20,28 +20,67 @@
           @click="navigateTo({name: 'song-edit', params: {songId: song.id}})">
           Edit
         </v-btn>
+
+        <v-btn
+          v-if="isUserLoggedIn"
+          dark
+          class="cyan"
+          @click="setAsBookmark()">
+          Bookmark
+        </v-btn>
+
+        <v-btn
+          v-if="isUserLoggedIn"
+          dark
+          class="cyan"
+          @click="unBookmark()">
+          UnBookmark
+        </v-btn>
       </v-flex>
       <v-flex xs6>
         <img class="album-image" :src="song.albumImageUrl" />
         <br>
-        {{song.album}}
+        <div class="song-album">
+          {{song.album}}
+        </div>
       </v-flex>
     </v-layout>
   </panel>
 </template>
 
 <script>
-import Panel from '@/components/Panel'
+import {mapState} from 'vuex'
+import BookmarkService from '@/services/BookmarService'
 export default {
   props: [
     'song'
   ],
-  components: {
-    Panel
+  data () {
+    return {
+      isBookmarked: false
+    }
+  },
+  computed: { // 이걸 사용하면서 v-if="$store.state.isUserLoggedIn를 그냥 isUserLoggedIn으로 쓸 수 있다
+    ...mapState([
+      'isUserLoggedIn'
+    ])
+  },
+  async mounted () {
+    const bookmark = (await BookmarkService.post({
+      songId: this.song.id,
+      userId: this.$store.state.user.id
+    })).data
+    console.log('bookmark', bookmark)
   },
   methods: {
     navigateTo (route) {
       this.$router.push(route)
+    },
+    setAsBookmark () {
+      console.log('bookmark Click')
+    },
+    unBookmark () {
+      console.log('Unbookmark Click')
     }
   }
 }
@@ -63,6 +102,9 @@ export default {
 
 .song-genre {
   font-size: 20px
+}
+.song-album {
+  font-size: 28px
 }
 
 .album-image {

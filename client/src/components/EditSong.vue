@@ -75,8 +75,8 @@
 </template>
 
 <script>
-import Panel from '@/components/Panel'
 import SongsService from '@/services/SongsService'
+// 들어오면서 데이터 가져오는게 아니라 여기 들어와서 mounted가 돌면서 기존 데이터들이 들어온다.
 export default {
   methods: {
     async save () {
@@ -90,11 +90,13 @@ export default {
         this.error = '필수항목을 모두 입력해 주세요.'
         return
       }
+      console.log('Save Number 2')
       const songId = this.$store.state.route.params.songId
       try {
+        console.log('Save this.song', this.song)
         await SongsService.put(this.song)
         this.$router.push({
-          name: 'song',
+          name: 'song', // 여기서 다시 viewSong 페이지로 이동함.
           params: {
             songId: songId
           }
@@ -122,14 +124,12 @@ export default {
   },
   async mounted () {
     try {
+      console.log('Save Number 1')
       const songId = this.$store.state.route.params.songId
       this.song = (await SongsService.show(songId)).data
     } catch (err) {
       console.log('song err', err)
     }
-  },
-  components: {
-    Panel
   }
 }
 </script>
